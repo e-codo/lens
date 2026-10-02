@@ -8,3 +8,7 @@
 - Рамка подстраивается под пропорции фото, в том числе вертикального.
 
 Чтобы выложить сайт, включите GitHub Pages: Settings → Pages → Deploy from branch → `main` / root.
+
+## Плагин для Figma
+
+В папке [`figma-plugin`](figma-plugin) лежит плагин, который применяет тот же эффект к выделенному слою и создаёт новый слой рядом. Инструкция по установке: [figma-plugin/README.md](figma-plugin/README.md).
