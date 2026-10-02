@@ -1,9 +1,10 @@
 # Lens
 
-Single-file web tool that reproduces Figma's Lens distortion effect with a WebGL shader.
+Одностраничный инструмент, который повторяет эффект Lens distortion из Figma на WebGL-шейдере.
 
-- Upload a photo, adjust Distortion, Aberration, Center point, Mode (Lateral / Axial) and Quality, then download a PNG.
-- Open `index.html` in a browser. No build step or dependencies.
-- Drag on the preview to move the center point.
+- Загрузите фото, настройте искажение, аберрацию, центр, режим (боковая или осевая) и качество, затем скачайте PNG.
+- Откройте `index.html` в браузере. Сборка и зависимости не нужны.
+- Центр искажения можно двигать перетаскиванием по превью.
+- Рамка подстраивается под пропорции фото, в том числе вертикального.
 
-To host it, enable GitHub Pages (Settings → Pages → Deploy from branch → `main` / root).
+Чтобы выложить сайт, включите GitHub Pages: Settings → Pages → Deploy from branch → `main` / root.
