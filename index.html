@@ -6,21 +6,17 @@
 <title>Дисторсия объектива</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
 <style>
-/* Layout: full-height workspace, photo stage with dot grid, floating inspector card on the right (stacks under the photo on phones) */
+/* Dark by default; light via the header toggle. Layout: full-height workspace, photo stage with dot grid, floating inspector card on the right (stacks under the photo on phones) */
 :root{
+  --bg:#0e0f13; --stage:#121318; --dot:#262833; --panel:#1a1b22; --field:#262831; --line:#2b2d37;
+  --fg:#f1f1f5; --muted:#8a8d9f; --accent:#7c7cff; --accent-2:#a47bff; --accent-fg:#0d0d1a;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 16px 48px rgba(0,0,0,.45);
+  --font:'Onest',system-ui,sans-serif; --mono:'JetBrains Mono',ui-monospace,monospace;color-scheme:dark;
+}
+:root[data-theme="light"]{
   --bg:#f3f3f6; --stage:#e6e7ee; --dot:#c9cbd6; --panel:#ffffff; --field:#f0f1f5; --line:#e1e2ea;
   --fg:#16171d; --muted:#7a7d8e; --accent:#5b5bf0; --accent-2:#8b5bf5; --accent-fg:#ffffff;
-  --shadow:0 1px 2px rgba(20,20,40,.06),0 12px 40px rgba(20,20,40,.10);
-  --font:'Onest',system-ui,sans-serif; --mono:'JetBrains Mono',ui-monospace,monospace;
-}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
-  --bg:#0e0f13; --stage:#121318; --dot:#262833; --panel:#1a1b22; --field:#262831; --line:#2b2d37;
-  --fg:#f1f1f5; --muted:#8a8d9f; --accent:#7c7cff; --accent-2:#a47bff; --accent-fg:#0d0d1a;
-  --shadow:0 1px 2px rgba(0,0,0,.4),0 16px 48px rgba(0,0,0,.45);color-scheme:dark}}
-:root[data-theme="dark"]{
-  --bg:#0e0f13; --stage:#121318; --dot:#262833; --panel:#1a1b22; --field:#262831; --line:#2b2d37;
-  --fg:#f1f1f5; --muted:#8a8d9f; --accent:#7c7cff; --accent-2:#a47bff; --accent-fg:#0d0d1a;
-  --shadow:0 1px 2px rgba(0,0,0,.4),0 16px 48px rgba(0,0,0,.45);color-scheme:dark}
+  --shadow:0 1px 2px rgba(20,20,40,.06),0 12px 40px rgba(20,20,40,.10);color-scheme:light}
 *{box-sizing:border-box}
 body{background:var(--bg);color:var(--fg);font-family:var(--font);font-size:13px;padding-inline:16px;padding-block:16px}
 .app{max-width:1280px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
@@ -28,6 +24,8 @@ header{display:flex;align-items:center;justify-content:space-between;gap:12px;fl
 .brand{display:flex;align-items:center;gap:10px;font-weight:600;font-size:15px;letter-spacing:-.01em}
 .logo{width:28px;height:28px;border-radius:9px;background:conic-gradient(from 210deg,var(--accent),var(--accent-2),#ff7ab8,var(--accent));display:grid;place-items:center}
 .logo i{width:12px;height:12px;border-radius:50%;background:var(--bg);display:block}
+.head-r{display:flex;align-items:center;gap:12px;flex-wrap:wrap;min-width:0}
+.btn.theme{padding:7px 12px;font-size:12px;border-radius:10px}
 .file-meta{font:12px var(--mono);color:var(--muted);overflow-wrap:anywhere}
 .work{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:14px;align-items:start}
 .stage{position:relative;border-radius:20px;background-color:var(--stage);
@@ -78,7 +76,7 @@ input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;bac
 <div class="app">
   <header>
     <div class="brand"><span class="logo"><i></i></span>Дисторсия объектива</div>
-    <div class="file-meta" id="info"></div>
+    <div class="head-r"><div class="file-meta" id="info"></div><button class="btn theme" id="theme" type="button" aria-label="Переключить тему">Светлая тема</button></div>
   </header>
   <div class="work">
     <div class="stage" id="stage">
@@ -233,6 +231,11 @@ function drag(e){const r=frame.getBoundingClientRect();
   $('cx').value=Math.round(st.cx*100)+'%';$('cy').value=Math.round(st.cy*100)+'%';render();}
 frame.addEventListener('pointerdown',e=>{frame.setPointerCapture(e.pointerId);drag(e);frame.onpointermove=drag;});
 frame.addEventListener('pointerup',()=>frame.onpointermove=null);
+function applyTheme(t){const r=document.documentElement;if(t==='light')r.setAttribute('data-theme','light');else r.removeAttribute('data-theme');
+  $('theme').textContent=t==='light'?'Тёмная тема':'Светлая тема';}
+let theme='dark';try{theme=localStorage.getItem('lens-theme')==='light'?'light':'dark';}catch(e){}
+applyTheme(theme);
+$('theme').onclick=()=>{theme=theme==='light'?'dark':'light';applyTheme(theme);try{localStorage.setItem('lens-theme',theme);}catch(e){}};
 (document.fonts&&document.fonts.ready?document.fonts.ready:Promise.resolve()).then(()=>setImage(sample()));
 </script>
 
